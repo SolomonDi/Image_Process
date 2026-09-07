@@ -6,6 +6,8 @@
 #include"stb_image_write.h"
 
 #include<libraw/libraw.h>
+#include<tiffio.h>
+#include<fstream>
 #include<vector>
 #include<string>
 #include<stdexcept>
@@ -14,6 +16,7 @@
 #include<algorithm> 
 #include<cmath>     
 #include<iostream>
+
 constexpr float Vgamma = 1.0f / 2.2f;
 
 //class for reading of image
@@ -133,8 +136,7 @@ std::optional<RawImage> load_raw(const std::string &path) {
     image.white_level = color.maximum;
     image.cfaPattern = idata.filters;
 
-    // raw_pitch is the row stride in BYTES and may exceed raw_width * 2,
-    // so copy row by row instead of assuming a packed buffer.
+    
     const std::size_t pitchPx = sizes.raw_pitch
         ? sizes.raw_pitch / sizeof(uint16_t)
         : static_cast<std::size_t>(sizes.raw_width);
@@ -220,10 +222,6 @@ Image demosaic_cpu(const RawImage &raw_image) {
                     if (color == 0) sumR = normalized;
                     else if (color == 2) sumB = normalized;
                     else { sumG += normalized; ++countG;}
-                    
-                    
-
-
                 }
             }
 
@@ -251,4 +249,48 @@ Image demosaic_cpu(const RawImage &raw_image) {
     }
 
     return image;
+}
+
+//func for saving raw(dng) to binary without data losses
+inline bool save_raw_binary(const std::string &path, const RawImage &raw_image) {
+
+    std::ofstream file(path, std::ios::binary);
+    if (!file) return false;
+
+    file.write(reinterpret_cast<const char*>(raw_image.data.data()), 
+    raw_image.size());
+
+    return file.good();
+}
+
+inline bool save_raw_in_tiff(const std::string &path, const RawImage &raw_image) {
+
+    TIFF *tif = TIFFOpen(path.c_str(), "w");
+    if (!tif) return false;
+
+    TIFFSetField(tif, TIFFTAG_IMAGEWIDTH, raw_image.width);
+    TIFFSetField(tif, TIFFTAG_IMAGELENGTH, raw_image.height);
+    TIFFSetField(tif, TIFFTAG_SAMPLESPERPIXEL, 1);
+    TIFFSetField(tif, TIFFTAG_BITSPERSAMPLE, 16);
+    TIFFSetField(tif, TIFFTAG_ORIENTATION, ORIENTATION_TOPLEFT);
+    TIFFSetField(tif, TIFFTAG_PHOTOMETRIC, PHOTOMETRIC_MINISBLACK);
+    TIFFSetField(tif, TIFFTAG_PLANARCONFIG, PLANARCONFIG_CONTIG);
+    TIFFSetField(tif, TIFFTAG_ROWSPERSTRIP, raw_image.height);
+
+    for (int i = 0; i < raw_image.height; ++i) {
+
+       const uint16_t *row_ptr = raw_image.data.data() + static_cast<std::size_t>(i)
+        * raw_image.width; 
+
+        if (TIFFWriteScanline(tif, const_cast<uint16_t*>(row_ptr), i) < 0) {
+
+            TIFFClose(tif);
+            return false;   
+
+        }
+    }
+
+    TIFFClose(tif);
+    return true;
+
 }

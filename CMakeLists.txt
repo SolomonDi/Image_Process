@@ -7,6 +7,7 @@ set(CMAKE_CUDA_STANDARD 17)
 
 find_package(CUDAToolkit REQUIRED)
 find_package(libraw CONFIG REQUIRED)
+find_package(TIFF REQUIRED)
 
 if(NOT DEFINED CMAKE_CUDA_ARCHITECTURES)
     set(CMAKE_CUDA_ARCHITECTURES 61;75;80;86;89)
@@ -21,4 +22,4 @@ target_include_directories(cuda_raw_processor PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-target_link_libraries(cuda_raw_processor PRIVATE CUDA::cudart libraw::raw_r)
+target_link_libraries(cuda_raw_processor PRIVATE CUDA::cudart libraw::raw_r TIFF::TIFF)

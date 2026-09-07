@@ -1,6 +1,6 @@
-#include<iostream>
-#include"im_read.hpp"
-#include"gpu_process.hpp"
+#include <iostream>
+#include "im_read.hpp"
+#include "gpu_process.hpp"
 
 int main(int argc, char** argv) {
 
@@ -17,11 +17,24 @@ int main(int argc, char** argv) {
               << " white=" << raw->white_level
               << " filters=0x" << std::hex << raw->cfaPattern << std::dec << "\n";
 
-    Image resultCPU = demosaic_cpu(*raw);
-    save_image("output_cpu.png", resultCPU);
+    if (save_raw_binary("raw_data.bin", *raw)) {
+        std::cout << "OK: raw_data.bin saved ("
+                  << (size_t)raw->width * raw->height * 2 << " bytes expected)\n";
+    } else {
+        std::cerr << "FAIL: failed to save raw_data.bin\n";
+    }
 
-    Image resultGPU = process_gpu_demosaic(*raw);
-    save_image("output_gpu.png", resultGPU);
+    if (save_raw_in_tiff("raw_mosaic.tiff", *raw)) {
+        std::cout << "OK: raw_mosaic.tiff saved\n";
+    } else {
+        std::cerr << "FAIL: failed to save raw_mosaic.tiff\n";
+    }
+
+    //Image resultCPU = demosaic_cpu(*raw);
+    //save_image("output_cpu.png", resultCPU);
+
+    //Image resultGPU = process_gpu_demosaic(*raw);
+    //save_image("output_gpu.png", resultGPU);
 
     return 0;
 }
