@@ -1,6 +1,8 @@
 #include <iostream>
 #include "im_read.hpp"
 #include "gpu_process.hpp"
+#include "image_stats.hpp"
+
 
 int main(int argc, char** argv) {
 
