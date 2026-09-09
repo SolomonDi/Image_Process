@@ -28,7 +28,7 @@ inline ImageStats compute_stats(const RawImage &raw) {
 
     for (const auto &value : raw.data) {
         sum += value;
-
+ 
         if (value < stats.min) stats.min = value;
         if (value > stats.max) stats.max = value;
 
@@ -78,5 +78,43 @@ inline ImageStats compute_region(const RawImage &raw, int x0, int y0,
     raw_image.height = height;
 
     return compute_stats(raw_image);
+
+}
+
+
+inline RawImage region_crop(const RawImage &raw, int x0, int y0, int width, int height) {
+
+    x0 -= (x0 % 2);
+    y0 -= (y0 % 2);
+    width += (width % 2);
+    height += (height % 2);
+
+    x0 = std::max(0, std::min(x0, raw.width - width));
+    y0 = std::max(0, std::min(y0, raw.height - height));
+
+
+    RawImage cropped;
+
+    cropped.width = width;
+    cropped.height = height;
+    cropped.black_level = raw.black_level;
+    cropped.white_level = raw.white_level;
+    cropped.cfaPattern = raw.cfaPattern;
+    cropped.wbR = raw.wbR;
+    cropped.wbG = raw.wbG;
+    cropped.wbB = raw.wbB;
+    
+    cropped.data.reserve(static_cast<std::size_t>(width) * height);
+    for (int y = y0; y < y0 + height; ++y) {
+
+        for (int x = x0; x < x0 + width; ++x) {
+
+            cropped.data.push_back(raw.data[static_cast<std::size_t>(y) * raw.width + x]);
+
+        }
+
+    }
+
+    return cropped;
 
 }

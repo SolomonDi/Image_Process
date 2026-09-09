@@ -1,6 +1,16 @@
 # ninja log v6
-9	802	8104733133049712	CMakeFiles/cuda_raw_processor.dir/main.cpp.obj	7b6249c7d5d7668e
-17	1122	8104733133134792	CMakeFiles/cuda_raw_processor.dir/im_process.cu.obj	f5735fac9588f783
-1123	1524	8104733144193066	cuda_raw_processor.exe	2676fb29ea6fbc5b
-22	1122	8104760814492241	CMakeFiles/cuda_raw_processor.dir/main.cpp.obj	7b6249c7d5d7668e
-1123	1468	8104760825493511	cuda_raw_processor.exe	2676fb29ea6fbc5b
+22	130	8106334320433682	cuda_raw_gui_autogen/timestamp	b6c2a2e5dbf6dd85
+22	130	8106334320433682	cuda_raw_gui_autogen/mocs_compilation.cpp	b6c2a2e5dbf6dd85
+22	130	8106334320433682	C:/Users/RED.DOT/Desktop/PNG NOISE/build/cuda_raw_gui_autogen/timestamp	b6c2a2e5dbf6dd85
+22	130	8106334320433682	C:/Users/RED.DOT/Desktop/PNG NOISE/build/cuda_raw_gui_autogen/mocs_compilation.cpp	b6c2a2e5dbf6dd85
+135	172	8106334320885491	CMakeFiles/cuda_raw_gui.dir/cuda_raw_gui_autogen/mocs_compilation.cpp.obj	6735d13f0d4b831d
+31	901	8106334319851928	CMakeFiles/cuda_raw_processor.dir/main.cpp.obj	7b6249c7d5d7668e
+140	1994	8106334320945498	CMakeFiles/cuda_raw_gui.dir/gui.cpp.obj	9059782c2e1411be
+32	132	8106335091294106	cuda_raw_gui_autogen/timestamp	b6c2a2e5dbf6dd85
+32	132	8106335091294106	cuda_raw_gui_autogen/mocs_compilation.cpp	b6c2a2e5dbf6dd85
+32	132	8106335091294106	C:/Users/RED.DOT/Desktop/PNG NOISE/build/cuda_raw_gui_autogen/timestamp	b6c2a2e5dbf6dd85
+32	132	8106335091294106	C:/Users/RED.DOT/Desktop/PNG NOISE/build/cuda_raw_gui_autogen/mocs_compilation.cpp	b6c2a2e5dbf6dd85
+42	1182	8106335091385891	CMakeFiles/cuda_raw_processor.dir/im_process.cu.obj	f5735fac9588f783
+134	1252	8106335092310329	CMakeFiles/cuda_raw_gui.dir/im_process.cu.obj	12153fbe0daa2287
+1252	1636	8106335103491916	cuda_raw_gui.exe	4a86a1ae74030a2c
+1183	1656	8106335102802748	cuda_raw_processor.exe	2676fb29ea6fbc5b

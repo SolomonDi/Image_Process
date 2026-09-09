@@ -17,7 +17,7 @@
 #include<cmath>     
 #include<iostream>
 
-constexpr float Vgamma = 1.0f / 2.2f;
+//constexpr float Vgamma = 1.0f / 2.2f;
 
 //class for reading of image
 class Image {
@@ -236,9 +236,9 @@ Image demosaic_cpu(const RawImage &raw_image) {
             b = std::min(1.0f, std::max(0.0f, b));
 
             //Gamma correction R^invGamma
-            r = std::pow(r, Vgamma);
-            g = std::pow(g, Vgamma);
-            b = std::pow(b, Vgamma);
+            //r = std::pow(r, Vgamma);
+            // g = std::pow(g, Vgamma);
+            //b = std::pow(b, Vgamma);
 
             std::size_t idx = (static_cast<std::size_t>(by) * outW + bx) * 3;
             image.data[idx + 0] = (uint8_t)(r * 255.0f + 0.5f);
@@ -293,4 +293,26 @@ inline bool save_raw_in_tiff(const std::string &path, const RawImage &raw_image)
     TIFFClose(tif);
     return true;
 
+}
+
+inline Image apply_gamma(const Image &s_im, float gamma) {
+
+    Image im;
+    im.width = s_im.width;
+    im.height = s_im.height;
+    im.channels = s_im.channels;
+    im.data.resize(s_im.data.size());
+    
+    float invGamma = 1.f / gamma;
+    
+    for (std::size_t i = 0; i < s_im.data.size(); ++i) {
+
+        float v = s_im.data[i] / 255.f;
+        v = std::pow(v, invGamma );
+        v = std::min(1.f, std::max(0.f, v));
+        im.data[i] = static_cast<uint8_t>(v * 255.f + 0.5f);
+
+    }
+
+    return im;
 }

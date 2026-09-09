@@ -1,6 +1,6 @@
 #include "im_process.cuh"
 
-__device__ __constant__ float kInvGamma = 1.0f / 2.2f;
+//__device__ __constant__ float kInvGamma = 1.0f / 2.2f;
 
 __global__ void demosaicBinKernel(
     const uint16_t* d_raw, int rawW, int rawH, uint8_t* d_out,
@@ -43,9 +43,9 @@ __global__ void demosaicBinKernel(
     g = fminf(1.0f, fmaxf(0.0f, g));
     b = fminf(1.0f, fmaxf(0.0f, b));
 
-    r = powf(r, kInvGamma);
-    g = powf(g, kInvGamma);
-    b = powf(b, kInvGamma);
+    //r = powf(r, kInvGamma);
+    //g = powf(g, kInvGamma);
+    //b = powf(b, kInvGamma);
 
     size_t idx = ((size_t)by * outW + bx) * 3;
 
@@ -67,4 +67,27 @@ void launchDemosaicBin(const uint16_t* d_raw,
     dim3 grid((outW + block.x - 1) / block.x, (outH + block.y - 1) / block.y);
     demosaicBinKernel<<<grid, block, 0, stream>>>(
         d_raw, rawW, rawH, d_out, outW, outH, blackLevel, range, cfaPattern, wbR, wbG, wbB);
+}
+
+
+__global__ void applyGammaKernel(const uint8_t *src, uint8_t *dst, size_t count, float Gamma) {
+
+    size_t idx = blockIdx.x * blockDim.x + threadIdx.x;
+
+    if (idx >= count) return;
+
+    float v = src[idx] / 255.f;
+    v = powf(v, Gamma);
+    v = fminf(1.f, fmaxf(0.f, v));
+    
+    dst[idx] = static_cast<uint8_t>(v * 255.f + 0.5f);
+}
+
+
+void launchApplyGamma(const uint8_t* d_src, uint8_t* d_dst, size_t count, float Gamma, 
+cudaStream_t stream) 
+{
+    int threads = 256;
+    int blocks = static_cast<int>((count + threads - 1) / threads);
+    applyGammaKernel<<<blocks, threads, 0, stream>>>(d_src, d_dst, count, Gamma);
 }

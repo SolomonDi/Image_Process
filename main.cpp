@@ -32,11 +32,11 @@ int main(int argc, char** argv) {
         std::cerr << "FAIL: failed to save raw_mosaic.tiff\n";
     }
 
-    //Image resultCPU = demosaic_cpu(*raw);
-    //save_image("output_cpu.png", resultCPU);
+    Image resultCPU = demosaic_cpu(*raw);
+    save_image("output_cpu.png", resultCPU);
 
-    //Image resultGPU = process_gpu_demosaic(*raw);
-    //save_image("output_gpu.png", resultGPU);
+    Image resultGPU = process_gpu_demosaic(*raw);
+    save_image("output_gpu.png", resultGPU);
 
     return 0;
 }
