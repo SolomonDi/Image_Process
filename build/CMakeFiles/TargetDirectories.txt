@@ -1,6 +1,0 @@
-C:/Users/RED.DOT/Desktop/PNG NOISE/build/CMakeFiles/cuda_raw_processor.dir
-C:/Users/RED.DOT/Desktop/PNG NOISE/build/CMakeFiles/cuda_raw_gui.dir
-C:/Users/RED.DOT/Desktop/PNG NOISE/build/CMakeFiles/edit_cache.dir
-C:/Users/RED.DOT/Desktop/PNG NOISE/build/CMakeFiles/rebuild_cache.dir
-C:/Users/RED.DOT/Desktop/PNG NOISE/build/CMakeFiles/cuda_raw_gui_autogen_timestamp_deps.dir
-C:/Users/RED.DOT/Desktop/PNG NOISE/build/CMakeFiles/cuda_raw_gui_autogen.dir
