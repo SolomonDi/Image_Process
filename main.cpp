@@ -22,6 +22,12 @@ int main(int argc, char** argv) {
     if (save_raw_binary("raw_data.bin", *raw)) {
         std::cout << "OK: raw_data.bin saved ("
                   << (size_t)raw->width * raw->height * 2 << " bytes expected)\n";
+
+        if (save_raw_notes("raw_data_mathcad.txt", *raw, cfa_pattern_name(*raw), "raw_data.bin"))
+            std::cout << "OK: raw_data_mathcad.txt saved (sizes, levels and the Mathcad line)\n";
+        else
+            std::cerr << "FAIL: failed to save raw_data_mathcad.txt\n";
+
     } else {
         std::cerr << "FAIL: failed to save raw_data.bin\n";
     }
